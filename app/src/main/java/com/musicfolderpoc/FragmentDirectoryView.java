@@ -48,7 +48,7 @@ public class FragmentDirectoryView extends Fragment {
 
     private void init() {
         initViews();
-        if (dirList.size() == 0) {
+        if (dirList != null && dirList.size() == 0) {
             tvNoFiles.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
         } else {

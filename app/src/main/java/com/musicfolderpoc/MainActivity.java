@@ -8,21 +8,38 @@ import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MainActivity extends FragmentActivity /*implements LoaderManager.LoaderCallbacks*/ {
+public class MainActivity extends AppCompatActivity /*implements LoaderManager.LoaderCallbacks*/ {
 
     private static final int URL_LOADER = 0;
     private ContentRetriever contentRetriever;
     private ArrayList<String> list = new ArrayList<>();
     private HashMap<String, String> dirList = new HashMap<>();
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        mActionBar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_action_back));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //What to do on back clicked
+                onBackPressed();
+            }
+        });
+
         contentRetriever = new ContentRetriever(this);
         loadDirectoryPage("");
 //        getSupportLoaderManager().initLoader(URL_LOADER, null, this);
