@@ -71,19 +71,10 @@ public class MainActivity extends AppCompatActivity /*implements LoaderManager.L
 
     }*/
 
-    final int WHAT = 1;
-
-//    Handler handler = new Handler() {
-//        @Override
-//        public void handleMessage(Message msg) {
-//            if (msg.what == WHAT) loadDirectoryPage();
-//        }
-//    };
-
     public void loadDirectoryPage(String path) {
         ArrayList<EntityDirectory> directoryArrayList = contentRetriever.getAllDirectories(path);
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.flContainer, FragmentDirectoryView.newInstance(directoryArrayList)).addToBackStack("").commit();
+                .add(R.id.flContainer, FragmentDirectoryView.newInstance(directoryArrayList, contentRetriever)).addToBackStack("").commit();
     }
 
     @Override

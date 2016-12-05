@@ -7,6 +7,7 @@ import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.FileProvider;
+import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
 import java.io.File;
@@ -62,5 +63,36 @@ public class ContentRetriever {
             }
         }
         return directoryArrayList;
+    }
+
+    public boolean isDirectory(String path) {
+        File file = new File(path);
+        if (file.isDirectory()) {
+            return true;
+        }
+        return false;
+    }
+
+    /*
+    * Get the extension of a file.
+    */
+    private static String getExtension(File f) {
+        String ext = null;
+        String s = f.getName();
+        int i = s.lastIndexOf('.');
+
+        if (i > 0 && i < s.length() - 1) {
+            ext = s.substring(i + 1).toLowerCase();
+        }
+        return ext;
+    }
+
+    public boolean isMusicFile(String path) {
+        File file = new File(path);
+        String extension = getExtension(file);
+        if (!TextUtils.isEmpty(extension) && extension.equalsIgnoreCase("mp3")) {
+            return true;
+        }
+        return false;
     }
 }

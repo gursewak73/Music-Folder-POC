@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by Gursewak on 12/3/2016.
@@ -25,10 +26,12 @@ public class FragmentDirectoryView extends Fragment {
     private RecyclerView recyclerView;
     private View view;
     private TextView tvNoFiles;
+    private ContentRetriever contentRetriever;
 
-    public static FragmentDirectoryView newInstance(ArrayList<EntityDirectory> dirList) {
+    public static FragmentDirectoryView newInstance(ArrayList<EntityDirectory> dirList, ContentRetriever contentRetriever) {
         FragmentDirectoryView fragmentDirectoryView = new FragmentDirectoryView();
         fragmentDirectoryView.dirList = dirList;
+        fragmentDirectoryView.contentRetriever = contentRetriever;
         return fragmentDirectoryView;
     }
 
@@ -48,6 +51,9 @@ public class FragmentDirectoryView extends Fragment {
 
     private void init() {
         initViews();
+        if (dirList != null) {
+            extractMusicFiles();
+        }
         if (dirList != null && dirList.size() == 0) {
             tvNoFiles.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
@@ -56,8 +62,19 @@ public class FragmentDirectoryView extends Fragment {
         }
     }
 
+    private void extractMusicFiles() {
+        Iterator<EntityDirectory> directoryIterator = dirList.iterator();
+        while (directoryIterator.hasNext()) {
+            EntityDirectory entityDirectory = directoryIterator.next();
+            if (!contentRetriever.isDirectory(entityDirectory.getPath()) &&
+                    !contentRetriever.isMusicFile(entityDirectory.getPath())) {
+                directoryIterator.remove();
+            }
+        }
+    }
+
     private void setAdapter() {
-        RecyclerAdapterDirectoryView recyclerAdapterDirectoryView = new RecyclerAdapterDirectoryView(context, dirList);
+        RecyclerAdapterDirectoryView recyclerAdapterDirectoryView = new RecyclerAdapterDirectoryView(context, dirList, contentRetriever);
         recyclerView.setAdapter(recyclerAdapterDirectoryView);
     }
 
