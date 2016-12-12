@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <!-- Tab title -->
+    <TextView
+        android:id="@+id/tab_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="sdasd"
+        android:textColor="@android:color/white"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
+    <!-- Tab divider -->
+
+    <ImageView
+        android:id="@+id/deviderView"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:layout_gravity="center"
+        android:gravity="right"
+        android:tint="@android:color/white"
+        android:src="@drawable/ic_arrow" />
+
+</LinearLayout>

@@ -1,16 +1,14 @@
 package com.musicfolderpoc;
 
-import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.provider.MediaStore;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,12 +20,36 @@ public class MainActivity extends AppCompatActivity /*implements LoaderManager.L
     private ArrayList<String> list = new ArrayList<>();
     private HashMap<String, String> dirList = new HashMap<>();
     private Toolbar toolbar;
+    private String tabTitles[] = new String[]{"Tab1", "Tab2", "Tab3"};
+    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+
+        /*tabLayout.addTab(tabLayout.newTab().setText("test1"));
+        tabLayout.addTab(tabLayout.newTab().setText("test2"));
+        tabLayout.addTab(tabLayout.newTab().setText("test3"));
+        tabLayout.addTab(tabLayout.newTab().setText("test4"));
+        tabLayout.addTab(tabLayout.newTab().setText("test1"));
+        tabLayout.addTab(tabLayout.newTab().setText("test2"));
+        tabLayout.addTab(tabLayout.newTab().setText("test3"));
+        tabLayout.addTab(tabLayout.newTab().setText("test4"));
+        tabLayout.addTab(tabLayout.newTab().setText("test1"));
+
+
+        //Set Custom tab Background
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            TabLayout.Tab tab = tabLayout.getTabAt(i);
+            LinearLayout linearLayout = (LinearLayout)
+                    LayoutInflater.from(this).inflate(R.layout.tab_layout, tabLayout, false);
+            TextView tvTabText = (TextView) linearLayout.findViewById(R.id.tab_title);
+            tvTabText.setText(tab.getText());
+            tab.setCustomView(linearLayout);
+        }*/
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -43,6 +65,24 @@ public class MainActivity extends AppCompatActivity /*implements LoaderManager.L
         contentRetriever = new ContentRetriever(this);
         loadDirectoryPage("");
 //        getSupportLoaderManager().initLoader(URL_LOADER, null, this);
+    }
+
+    public void updateTabs(String path) {
+        String[] locationList = path.split("/");
+        tabLayout.removeAllTabs();
+        for (String location : locationList) {
+            tabLayout.addTab(tabLayout.newTab().setText(location));
+        }
+        //Set Custom tab Background
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            TabLayout.Tab tab = tabLayout.getTabAt(i);
+            LinearLayout linearLayout = (LinearLayout)
+                    LayoutInflater.from(this).inflate(R.layout.tab_layout, tabLayout, false);
+            TextView tvTabText = (TextView) linearLayout.findViewById(R.id.tab_title);
+            tvTabText.setText(tab.getText());
+            tab.setCustomView(linearLayout);
+        }
+        tabLayout.getTabAt(locationList.length - 1).select();
     }
 
  /*   @Override
@@ -73,6 +113,7 @@ public class MainActivity extends AppCompatActivity /*implements LoaderManager.L
 
     public void loadDirectoryPage(String path) {
         ArrayList<EntityDirectory> directoryArrayList = contentRetriever.getAllDirectories(path);
+        updateTabs(contentRetriever.getCurrentPath());
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.flContainer, FragmentDirectoryView.newInstance(directoryArrayList, contentRetriever)).addToBackStack("").commit();
     }
@@ -84,6 +125,14 @@ public class MainActivity extends AppCompatActivity /*implements LoaderManager.L
             getFragmentManager().popBackStack();
         } else {
             super.onBackPressed();
+            String path = contentRetriever.getCurrentPath();
+            String[] arr = path.split("/");
+            String result = "";
+            if (arr.length > 0) {
+                result = path.substring(0, path.lastIndexOf("/" + arr[arr.length - 1]));
+            }
+            updateTabs(result);
+            Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
         }
     }
 }

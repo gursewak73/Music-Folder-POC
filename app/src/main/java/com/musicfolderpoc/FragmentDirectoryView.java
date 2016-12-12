@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -27,6 +28,7 @@ public class FragmentDirectoryView extends Fragment {
     private View view;
     private TextView tvNoFiles;
     private ContentRetriever contentRetriever;
+    private String currentPath;
 
     public static FragmentDirectoryView newInstance(ArrayList<EntityDirectory> dirList, ContentRetriever contentRetriever) {
         FragmentDirectoryView fragmentDirectoryView = new FragmentDirectoryView();
@@ -50,6 +52,7 @@ public class FragmentDirectoryView extends Fragment {
     }
 
     private void init() {
+        currentPath = contentRetriever.getCurrentPath();
         initViews();
         if (dirList != null) {
             extractMusicFiles();
@@ -83,5 +86,11 @@ public class FragmentDirectoryView extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         tvNoFiles = (TextView) view.findViewById(R.id.tvNoFiles);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+//        Toast.makeText(context,currentPath,Toast.LENGTH_SHORT).show();
     }
 }

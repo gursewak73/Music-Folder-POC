@@ -48,6 +48,7 @@ public class ContentRetriever {
         ArrayList<EntityDirectory> directoryArrayList = new ArrayList<>();
         if (currentPath.isEmpty()) {
             currentPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+            this.currentPath = currentPath;
         } else {
             this.currentPath = currentPath;
         }
