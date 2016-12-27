@@ -5,23 +5,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
+    <com.rokpetek.breadcrumbtoolbar.BreadcrumbToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark" />
-
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
-        app:tabSelectedTextColor="@android:color/white"
-        app:tabTextColor="@android:color/white"
-        app:tabGravity="center"
-        app:tabIndicatorHeight="0dip"
-        app:tabMode="scrollable" />
-
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary" />
 
     <FrameLayout
         android:id="@+id/flContainer"

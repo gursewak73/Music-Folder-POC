@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -22,13 +22,12 @@ import java.util.Iterator;
 public class FragmentDirectoryView extends Fragment {
 
     private Context context;
-    //    private ArrayList<String> directoryList;
     ArrayList<EntityDirectory> dirList;
     private RecyclerView recyclerView;
     private View view;
     private TextView tvNoFiles;
     private ContentRetriever contentRetriever;
-    private String currentPath;
+    private String fragmentName;
 
     public static FragmentDirectoryView newInstance(ArrayList<EntityDirectory> dirList, ContentRetriever contentRetriever) {
         FragmentDirectoryView fragmentDirectoryView = new FragmentDirectoryView();
@@ -47,12 +46,17 @@ public class FragmentDirectoryView extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_directory_view, container, false);
+        File file = new File(contentRetriever.getCurrentPath());
+        if (file != null) {
+            fragmentName = file.getName();
+        } else {
+            fragmentName = "Storage";
+        }
         init();
         return view;
     }
 
     private void init() {
-        currentPath = contentRetriever.getCurrentPath();
         initViews();
         if (dirList != null) {
             extractMusicFiles();
@@ -88,9 +92,7 @@ public class FragmentDirectoryView extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-//        Toast.makeText(context,currentPath,Toast.LENGTH_SHORT).show();
+    public String getFragmentName() {
+        return fragmentName;
     }
 }
